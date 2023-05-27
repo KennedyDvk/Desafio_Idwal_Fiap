@@ -1,0 +1,10 @@
+
+A API conta com a tecnologia de segurança Spring Security com o hash Bcrypt. Para fazer as requisições, o usuário deve se logar.
+
+Login: kennedy
+Senha: 123456
+
+insira no banco de dados: 
+
+INSERT INTO usuarios (login, senha)
+VALUES ('kennedy', '$2a$10$ggY6QemLtXTV9z7pr0xKf.gdjhplcldE9iwo.IPIeCbvdRGM4UifC');
