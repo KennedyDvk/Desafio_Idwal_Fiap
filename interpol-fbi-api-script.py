@@ -122,7 +122,7 @@ while True:
     response_items = data['items']
 
     # Ensure all keys are present in every dictionary
-    all_keys = set().union(*(item.keys() for item in response_items))
+    all_keys = list(set().union(*(item.keys() for item in response_items)))
     for item in response_items:
         for k in all_keys:
             item.setdefault(k, None)
