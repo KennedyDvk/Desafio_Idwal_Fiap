@@ -4,6 +4,7 @@ import pandas as pd
 import pycountry
 from datetime import datetime, date
 from sqlalchemy import create_engine
+from datetime import datetime
 import cx_Oracle   # pip install cx_Oracle
 
 # Replace with your Oracle database connection details
@@ -61,7 +62,6 @@ def get_country_name(country_id):  # 2 letters country code
             return country_obj.name
         return country_id
     except:
-        print('An error happened! country_id is: ' + str(country_id))
         return country_id     
 
 def transform_float_feet_height_to_cm_string(h):
@@ -106,7 +106,7 @@ def SQL_INSERT_STATEMENT_FROM_DATAFRAME(source_df, target_table_name):
     return sql_texts        
         
 # --------------------------- CALL FBI API --------------------------------
-
+''
 # Create an empty DataFrame
 fbi_wanted_df = pd.DataFrame()
 
@@ -116,7 +116,7 @@ while True:
     data = json.loads(response.content)
 
     if data['total'] == 0 or data['items'] == []:
-        print('No more data available')
+        print('No data left to fetch')
         break
 
     response_items = data['items']
@@ -132,11 +132,14 @@ while True:
 
     # Concatenate the DataFrame to the existing DataFrame
     fbi_wanted_df = pd.concat([fbi_wanted_df, df], axis=0, sort=True, ignore_index=True)
+    
+    print(f'FBI search page is: {page}')
     page += 1
     if page == 199:     # Loop safety check
         print('Something\'s wrong, page iteration is at 199')
         break           
-
+print(f'Number of rows fetched from FBI is: {len(fbi_wanted_df)}')
+print('Success! Finished pulling data from FBI API')
 # --------------------------- CALL INTERPOL API --------------------------------
 
 page = 1
@@ -159,7 +162,7 @@ while True:
     for notice in red_notices:
         try:
             more_details_url = notice['_links']['self']['href']
-            more_details_json = json.loads(requests.get(more_details_url, timeout=20).content) 
+            more_details_json = json.loads(requests.get(more_details_url, timeout=5).content) 
 
             # Handle images
             thumbnail_url = walk_json_path(notice, '_links', 'thumbnail', 'href') 
@@ -191,11 +194,12 @@ while True:
             print(e)
             continue
 
+    print(f'Interpol search page is: {page}. Number of rows fetched from Interpol is: {len(interpol_wanted_df)}')
     if page == 99:   # Loop safety check
         print('Something\'s wrong, page index is 99 in code')
         break          
 
-
+print('Success! Finished pulling data from INTERPOL API')
 # -------------------- Transforming and uniting data from both sources ------------------------
 interpol_wanted_df['wanted_origin'] = 'INTERPOL'
 fbi_wanted_df['wanted_origin'] = 'FBI'    
@@ -280,6 +284,10 @@ fbi_wanted_df.drop('reward_min', axis=1, inplace=True)
 merged_df = pd.concat([interpol_wanted_df, fbi_wanted_df], axis=0, ignore_index=True)
 merged_df['weight'].replace(0, None, inplace=True)
 
+timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+merged_df['analyzed_at'] = timestamp
+print('Success! Finished transforming and uniting data into a single dataframe.')
+
 # -------------------------------------- SAVE TO ORACLE DATABASE --------------------------------------
 try:
     cx_Oracle.init_oracle_client(lib_dir=lib_dir)
@@ -310,3 +318,5 @@ for statement in insert_statements:
 
 connection.commit()  # Commit the changes
 cursor.close()  # Close the cursor
+
+print('Success! Script is finished.')
