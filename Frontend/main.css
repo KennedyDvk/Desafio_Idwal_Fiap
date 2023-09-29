@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+}
+
+header {
+    background-color: rgb(80, 1, 1);
+    display: flex;
+    justify-content: space-around;
+    height: 4%;
+}
+
+#idWall {
+    color: blanchedalmond;
+    font-size: 250%;
+    margin-top: 2%;
+    font-size: 270%;
+    text-decoration: none;
+}
+
+.menu {
+    color: blanchedalmond;
+    margin-top: 2.5%;
+    font-size: 190%;
+    text-decoration: none;
+}
+
+#modal {
+    border: 1px black solid;
+    margin-left: 40%;
+    display: grid;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 10%;
+    background-color: white;
+}
+
+#tituloWanted {
+    background-color: brown;
+    display: flex;
+}
+
+#escritaWanted {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 30px;
+    color: beige;
+}
+
+#logoFBI2 {
+    width: 90px;
+    margin-left: 10px;
+}
+
+#tabela {
+    border: 1px black solid;
+    display: grid;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+}
+
+#logoFBI {
+    width: 7%;
+}
+
+
+#logoInterpol {
+    width: 7%;
+    background-color: beige;
+    border-radius: 2px;
+}
