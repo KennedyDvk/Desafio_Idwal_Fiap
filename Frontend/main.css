@@ -25,14 +25,10 @@ header {
 }
 
 #modal {
-    border: 1px black solid;
-    margin-left: 40%;
     display: grid;
     width: fit-content;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     margin-top: 10%;
+    margin-left: 35%;
     background-color: white;
 }
 
@@ -53,6 +49,10 @@ header {
     margin-left: 10px;
 }
 
+#segundoGrid {
+    display: flex;
+}
+
 #tabela {
     border: 1px black solid;
     display: grid;
@@ -61,6 +61,10 @@ header {
     align-items: center;
     text-align: center;
     background-color: white;
+}
+
+#fotoProcurado {
+    border: 1px black solid ;
 }
 
 #logoFBI {
