@@ -5,11 +5,12 @@ import pycountry
 from datetime import datetime, date
 from sqlalchemy import create_engine
 from datetime import datetime
+import np
 import cx_Oracle   # pip install cx_Oracle
 
 # Replace with your Oracle database connection details
-USERNAME = "RM95511"
-PASSWORD = "210696"
+USERNAME = "RM95051"
+PASSWORD = "050403"
 HOST = "oracle.fiap.com.br"
 PORT = "1521"
 SID = "ORCL"
@@ -105,46 +106,10 @@ def SQL_INSERT_STATEMENT_FROM_DATAFRAME(source_df, target_table_name):
         sql_texts.append(insert_statement)
     return sql_texts        
         
-# --------------------------- CALL FBI API --------------------------------
-''
-# Create an empty DataFrame
-fbi_wanted_df = pd.DataFrame()
-
-page = 1
-while True:
-    response = requests.get('https://api.fbi.gov/wanted/v1/list', params={'page': page})
-    data = json.loads(response.content)
-
-    if data['total'] == 0 or data['items'] == []:
-        print('No data left to fetch')
-        break
-
-    response_items = data['items']
-
-    # Ensure all keys are present in every dictionary
-    all_keys = list(set().union(*(item.keys() for item in response_items)))
-    for item in response_items:
-        for k in all_keys:
-            item.setdefault(k, None)
-
-    # Create a DataFrame
-    df = pd.DataFrame(response_items, columns=all_keys)
-
-    # Concatenate the DataFrame to the existing DataFrame
-    fbi_wanted_df = pd.concat([fbi_wanted_df, df], axis=0, sort=True, ignore_index=True)
-    
-    print(f'FBI search page is: {page}')
-    page += 1
-    if page == 199:     # Loop safety check
-        print('Something\'s wrong, page iteration is at 199')
-        break           
-print(f'Number of rows fetched from FBI is: {len(fbi_wanted_df)}')
-print('Success! Finished pulling data from FBI API')
 # --------------------------- CALL INTERPOL API --------------------------------
 
 page = 1
-resultPerPage = 160
-#notices_iterated = 0
+resultPerPage = 100
 
 interpol_wanted_df = pd.DataFrame()
 while True:
@@ -195,12 +160,51 @@ while True:
             continue
 
     print(f'Interpol search page is: {page}. Number of rows fetched from Interpol is: {len(interpol_wanted_df)}')
-    if page == 99:   # Loop safety check
-        print('Something\'s wrong, page index is 99 in code')
+    if page == 3:   # API can only fetch this far
         break          
 
 print('Success! Finished pulling data from INTERPOL API')
+
+
+# --------------------------- CALL FBI API --------------------------------
+
+# Create an empty DataFrame
+fbi_wanted_df = pd.DataFrame()
+
+page = 1
+while True:
+    response = requests.get('https://api.fbi.gov/wanted/v1/list', params={'page': page})
+    data = json.loads(response.content)
+
+    if data['total'] == 0 or data['items'] == []:
+        print('No data left to fetch')
+        break
+
+    response_items = data['items']
+
+    # Ensure all keys are present in every dictionary
+    all_keys = list(set().union(*(item.keys() for item in response_items)))
+    for item in response_items:
+        for k in all_keys:
+            item.setdefault(k, None)
+
+    # Create a DataFrame
+    df = pd.DataFrame(response_items, columns=all_keys)
+
+    # Concatenate the DataFrame to the existing DataFrame
+    fbi_wanted_df = pd.concat([fbi_wanted_df, df], axis=0, sort=True, ignore_index=True)
+    
+    print(f'FBI search page is: {page}')
+    page += 1
+    if page == 199:     # Loop safety check
+        print('Something\'s wrong, page iteration is at 199')
+        break           
+print(f'Number of rows fetched from FBI is: {len(fbi_wanted_df)}')
+print('Success! Finished pulling data from FBI API')
+
+
 # -------------------- Transforming and uniting data from both sources ------------------------
+
 interpol_wanted_df['wanted_origin'] = 'INTERPOL'
 fbi_wanted_df['wanted_origin'] = 'FBI'    
 
@@ -282,10 +286,13 @@ fbi_wanted_df.drop('reward_max', axis=1, inplace=True)
 fbi_wanted_df.drop('reward_min', axis=1, inplace=True)
 
 merged_df = pd.concat([interpol_wanted_df, fbi_wanted_df], axis=0, ignore_index=True)
-merged_df['weight'].replace(0, None, inplace=True)
 
 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 merged_df['analyzed_at'] = timestamp
+
+merged_df.replace(0, np.nan, inplace=True)
+merged_df.replace("nan", np.nan, inplace=True)
+
 print('Success! Finished transforming and uniting data into a single dataframe.')
 
 # -------------------------------------- SAVE TO ORACLE DATABASE --------------------------------------
