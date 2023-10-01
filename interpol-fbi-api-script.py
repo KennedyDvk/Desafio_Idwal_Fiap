@@ -9,8 +9,8 @@ import np
 import cx_Oracle   # pip install cx_Oracle
 
 # Replace with your Oracle database connection details
-USERNAME = "RM95051"
-PASSWORD = "050403"
+USERNAME = "RM95511"
+PASSWORD = "210696"
 HOST = "oracle.fiap.com.br"
 PORT = "1521"
 SID = "ORCL"
@@ -93,7 +93,7 @@ def get_age_from_date_of_birth(date_string):
 def SQL_CREATE_STATEMENT_FROM_DATAFRAME(source_df, target_table_name):
     only_text_data_type_df = source_df.astype(str)
     sql_text = pd.io.sql.get_schema(only_text_data_type_df, target_table_name)   
-    oracle_clean_statement = sql_text.replace('\"', '').replace('TEXT', 'CLOB')
+    oracle_clean_statement = sql_text.replace('\"', '').replace('TEXT', 'VARCHAR2(4000)')
     return oracle_clean_statement
 
 def SQL_INSERT_STATEMENT_FROM_DATAFRAME(source_df, target_table_name):
