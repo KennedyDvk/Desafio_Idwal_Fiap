@@ -17,6 +17,15 @@
     </header>
 
     <div id="modal">
+        <!-- Barra de busca por ID -->
+        <form action="/wanteds" method="GET">
+            <label for="id">ID:</label>
+            <input type="text" id="id" name="id">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+    
+    <div id="modal">
         <div id="tituloWanted">
             <!-- <substituir para imagem dinamica> -->
             <img src="assets/FBI_SHIELD-logo-2D02BDDAC8-seeklogo.com.png" alt="logo FBI" id="logoFBI2">
@@ -35,6 +44,21 @@
              </div>
         </div>
     </div>
+    <script>
+        $('#modal form').on('submit', function(e) {
+            e.preventDefault();
+            var id = $('#id').val();
+            $.get('/wanteds' + id, function(data) {
+                $('#tabela').html(
+                '<p>Nome: ' + data.nome + '</p>' +
+                '<p>ID: ' + data.id + '</p>' +
+                '<p>Altura: ' + data.altura + '</p>' +
+                '<p>Peso: ' + data.peso + '</p>' +
+                '<p>Data nasc: ' + data.dataNasc + '</p>'
+        );
+    });
+});
 
+    </script>
 </body>
 </html>
