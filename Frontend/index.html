@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+
     <title>Id Wall consulta de criminosos</title>
 </head>
 <body>
@@ -32,33 +34,12 @@
             <h2 id="escritaWanted">WANTED!</h2>
         </div>
         <div id="segundoGrid">
-            <div id="tabela">
-                <p>Nome: john doe</p>
-                <p>ID: lorem</p>
-                <p>Altura: 1.80</p>
-                <p>Peso: 80kg</p>
-                <p>Data nasc: XX/XX/XXXX</p>
-             </div>
+           
              <div id="fotoProcurado">
                 <img src="assets/avatar.png" alt="imagem do procurado">
              </div>
         </div>
     </div>
-    <script>
-        $('#modal form').on('submit', function(e) {
-            e.preventDefault();
-            var id = $('#id').val();
-            $.get('/wanteds' + id, function(data) {
-                $('#tabela').html(
-                '<p>Nome: ' + data.nome + '</p>' +
-                '<p>ID: ' + data.id + '</p>' +
-                '<p>Altura: ' + data.altura + '</p>' +
-                '<p>Peso: ' + data.peso + '</p>' +
-                '<p>Data nasc: ' + data.dataNasc + '</p>'
-        );
-    });
-});
-
-    </script>
+    
 </body>
 </html>

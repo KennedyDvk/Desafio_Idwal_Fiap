@@ -1,79 +1,75 @@
-body {
-    margin: 0;
-}
 
-header {
+/* Estilo para o cabeçalho */
+.navmenu {
     background-color: rgb(80, 1, 1);
+    color: white;
+    padding: 10px;
     display: flex;
-    justify-content: space-around;
-    height: 4%;
-}
-
-#idWall {
-    color: blanchedalmond;
-    font-size: 250%;
-    margin-top: 2%;
-    font-size: 270%;
-    text-decoration: none;
-}
-
-.menu {
-    color: blanchedalmond;
-    margin-top: 2.5%;
-    font-size: 190%;
-    text-decoration: none;
-}
-
-#modal {
-    display: grid;
-    width: fit-content;
-    margin-top: 10%;
-    margin-left: 35%;
-    background-color: white;
-}
-
-#tituloWanted {
-    background-color: brown;
-    display: flex;
-}
-
-#escritaWanted {
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 30px;
-    color: beige;
-}
-
-#logoFBI2 {
-    width: 90px;
-    margin-left: 10px;
-}
-
-#segundoGrid {
-    display: flex;
-}
-
-#tabela {
-    border: 1px black solid;
-    display: grid;
-    width: fit-content;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    background-color: white;
-}
-
-#fotoProcurado {
-    border: 1px black solid ;
 }
 
 #logoFBI {
-    width: 7%;
+    max-width: 100px;
 }
 
+#idWall {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    margin-left: 20px;
+    
+}
+
+.menu-link {
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #f0e8e8;
+    margin-left: 20px;
+}
+.menu-link:hover {
+    color: #b5b0b0; /* Altera a cor do texto quando passar o mouse sobre o elemento */
+}
+
+.disabled-link {
+    color: #ccc; /* Define a cor de texto para links desativados */
+    pointer-events: none; /* Impede que o link seja clicável */
+}
 
 #logoInterpol {
-    width: 7%;
-    background-color: beige;
-    border-radius: 2px;
+    max-width: 100px;
+}
+
+/* Estilo para o formulário de pesquisa */
+.container {
+    margin-top: 20px;
+}
+
+.form-control {
+    width: 100%;
+}
+
+/* Estilo para o botão de busca */
+.custom-button {
+    margin: -5px;
+    width: 100%;
+    font-size: 18px;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: rgb(80, 1, 1);
+}
+.custom-button:hover {
+    background-color: rgb(118, 33, 33);
+}
+
+/* Estilo para a exibição dos dados */
+#wantedData {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #cccccc;
+    background-color: #f7f7f7;
+    font-size: 18px;
 }

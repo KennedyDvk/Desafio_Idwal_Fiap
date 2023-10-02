@@ -1,14 +1,23 @@
+const showData = (result) =>{
+    for(const tabela in result) {
+        if (document.querySelector("#"+tabela)) {
+            document.querySelector("#"+tabela).value = result[tabela]
+        }
 
+    }
+}
 
 var requestOptions = {
     method: 'GET',
     redirect: 'follow'
   };
         // Faça uma requisição HTTP GET para a sua API de backend
-        fetch('http://localhost:8080/wanteds', {
+        fetch(`http://localhost:8080/wanteds`, {
             method: 'GET',
+            mode: 'cors',
             // Adicione qualquer cabeçalho necessário aqui (por exemplo, content-type)
         })
+        .then(data => showData(data))
         .then(response => response.json())
         .then(data => {
             // Manipule os dados da resposta e atualize seu HTML
@@ -20,7 +29,7 @@ var requestOptions = {
         });
 
         // Função para atualizar a interface do usuário com dados do backend
-        function atualizarUI(data) {
+        /*function atualizarUI(data) {
             // Modifique os elementos HTML com os dados recebidos
             let tabela = document.getElementById('tabela');
             tabela.innerHTML = `
@@ -31,7 +40,7 @@ var requestOptions = {
                 <p>Data de Nascimento: ${data.dataNascimento}</p>
                 
             `;
-        }
+        }*/
 
 
   /*fetch("http://localhost:8080?wanted_origin_id") // Use o URL correto do seu endpoint
